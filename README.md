@@ -1,7 +1,8 @@
 # bantuek-thaichana
 
 ### TODO
-* local storage library
+* ~local storage library~
 * qr scanner
-* iframe ?
+* ~iframe~
 * sorting, recent
+* add to home screen
