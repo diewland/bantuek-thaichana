@@ -8,3 +8,4 @@
 * sorting, recent
 * add to home screen
 * thanks included libs
+* thanks thaichana.com
