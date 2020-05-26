@@ -4,3 +4,4 @@
 * local storage library
 * qr scanner
 * iframe ?
+* sorting, recent
