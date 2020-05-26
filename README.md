@@ -7,3 +7,4 @@
 * data structure
 * sorting, recent
 * add to home screen
+* thanks included libs
