@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- style -->
+    <style type='text/css'>
+      video {
+        width: 100%;
+      }
+    </style>
+
+    <title>บันทึกไทยชนะ</title>
+  </head>
+  <body>
+
+    <!-- camera -->
+    <div class="qrscanner" id="scanner"></div>
+
+    <!-- back button -->
+    <a class='btn btn-lg btn-success w-100' href='./index.html'>ถอยกลับ</a>
+
+    <!-- bottom scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
+    <script src="https://jbialobr.github.io/JsQRScanner/jsPretty/jsqrscanner.nocache.js"></script>
+
+    <script>
+      function onQRCodeScanned(scannedText)
+      {
+        // TODO
+        console.log(scannedText);
+      }
+      
+      function provideVideo()
+      {
+          var n = navigator;
+
+          if (n.mediaDevices && n.mediaDevices.getUserMedia)
+          {
+            return n.mediaDevices.getUserMedia({
+              video: {
+                facingMode: "environment"
+              },
+              audio: false
+            });
+          } 
+          
+          return Promise.reject('Your browser does not support getUserMedia');
+      }
+
+      function provideVideoQQ()
+      {
+          return navigator.mediaDevices.enumerateDevices()
+          .then(function(devices) {
+              var exCameras = [];
+              devices.forEach(function(device) {
+              if (device.kind === 'videoinput') {
+                exCameras.push(device.deviceId)
+              }
+           });
+              
+              return Promise.resolve(exCameras);
+          }).then(function(ids){
+              if(ids.length === 0)
+              {
+                return Promise.reject('Could not find a webcam');
+              }
+              
+              return navigator.mediaDevices.getUserMedia({
+                  video: {
+                    'optional': [{
+                      'sourceId': ids.length === 1 ? ids[0] : ids[1]//this way QQ browser opens the rear camera
+                      }]
+                  }
+              });        
+          });                
+      }
+      
+      //this function will be called when JsQRScanner is ready to use
+      function JsQRScannerReady()
+      {
+          //create a new scanner passing to it a callback function that will be invoked when
+          //the scanner succesfully scan a QR code
+          var jbScanner = new JsQRScanner(onQRCodeScanned);
+          //var jbScanner = new JsQRScanner(onQRCodeScanned, provideVideo);
+          //reduce the size of analyzed image to increase performance on mobile devices
+          jbScanner.setSnapImageMaxSize(300);
+        var scannerParentElement = document.getElementById("scanner");
+        if(scannerParentElement)
+        {
+          //append the jbScanner to an existing DOM element
+          jbScanner.appendTo(scannerParentElement);
+        }        
+      }
+    </script>
+
+  </body>
+</html>
