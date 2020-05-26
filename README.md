@@ -2,7 +2,8 @@
 
 ### TODO
 * ~local storage library~
-* qr scanner
+* ~qr scanner~
 * ~iframe~
+* data structure
 * sorting, recent
 * add to home screen
