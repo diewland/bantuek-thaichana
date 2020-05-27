@@ -34,6 +34,17 @@
       // query data from disk
       let data = Db.list();
 
+      // common
+      function update_disk () {
+        Disk.set(APP_TITLE, data);
+      }
+      function get_row_data (evt) {
+        let $root = $(evt.target).parents('li');
+        let title = $root.attr('data-title');
+        let url = $root.attr('data-url');
+        return [ $root, title, url ];
+      }
+
       // render places
       data.sort((a, b) => {
         // sort by timestamp desc
@@ -44,7 +55,7 @@
               data-title="${place.title}"
               data-url="${place.url}">
             <span>
-              <span class='title'>${place.title}</span>
+              <span class='place-title'>${place.title}</span>
               <sub><a class='btn-edit text-primary' href='#/'>แก้</a></sub>
               <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
             </span>
@@ -53,18 +64,48 @@
         `);
       });
 
+      // bind edit button
+      $('body').on('click', '.btn-edit', evt => {
+        let [ $root, title, url ] = get_row_data(evt);
+
+        // prompt
+        let new_title = prompt('แก้ชื่อร้านค้า', title);
+        if ((new_title) && (new_title != title)) {
+
+          // update place title
+          let row = data.filter(r => r.url == url)[0];
+          if (row) row.title = new_title;
+          update_disk();
+
+          // update new title to screen
+          $root.find('.place-title').html(new_title);
+        }
+      });
+
+      // bind delete button
+      $('body').on('click', '.btn-del', evt => {
+        let [ $root, title, url ] = get_row_data(evt);
+
+        // confirm
+        let confrm = confirm(`ยืนยันการลบ ${title}`);
+        if (!confrm) return;
+
+        // update to disk
+        data = data.filter(r => r.url != url);
+        update_disk();
+
+        // remove row from screen
+        $root.remove();
+      });
+
       // bind check in/out button
       $('body').on('click', '.btn-checkin', evt => {
-        let $root = $(evt.target).parents('li');
-        let title = $root.attr('data-title');
-        let url = $root.attr('data-url');
+        let [ $root, title, url ] = get_row_data(evt);
 
         // update place timestamp
         let row = data.filter(r => r.url == url)[0];
         if (row) row.timestamp = ts();
-
-        // save back to disk
-        Disk.set(APP_TITLE, data);
+        update_disk();
 
         // go to checkin/checkout in 100 ms
         setTimeout(_ => {
