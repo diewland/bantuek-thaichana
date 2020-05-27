@@ -31,8 +31,14 @@
 
     <script>
 
+      // query data from disk
+      let data = Db.list();
+
       // render places
-      Db.list_desc().forEach(place => {
+      data.sort((a, b) => {
+        // sort by timestamp desc
+        return b.timestamp - a.timestamp;
+      }).forEach(place => {
         $('.list-group').append(`
           <li class="list-group-item d-flex justify-content-between align-items-center"
               data-title="${place.title}"
@@ -54,10 +60,16 @@
         let url = $root.attr('data-url');
 
         // update place timestamp
-        // TODO
+        let row = data.filter(r => r.url == url)[0];
+        if (row) row.timestamp = ts();
 
-        // go to checkin/checkout
-        location.href = url;
+        // save back to disk
+        Disk.set(APP_TITLE, data);
+
+        // go to checkin/checkout in 100 ms
+        setTimeout(_ => {
+          location.href = url;
+        }, 100);
       });
 
     </script>
