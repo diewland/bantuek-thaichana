@@ -1,12 +1,13 @@
 # bantuek-thaichana
 
+### Special Thanks <a href='https://www.thaichana.com'>thaichana.com</a> 🙏
+
+### JS Libraries
+* https://jquery.com/
+* https://getbootstrap.com/
+* https://momentjs.com/
+* https://github.com/jbialobr/JsQRScanner
+* https://github.com/diewland/disk.js
+
 ### TODO
-* ~local storage library~
-* ~qr scanner~
-* ~iframe~
-* ~data structure~
-* ~sorting, recent~
-* edit, delete
 * add to home screen
-* thanks included libs
-* thanks thaichana.com
