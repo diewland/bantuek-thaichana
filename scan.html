@@ -27,15 +27,28 @@
 
     <!-- bottom scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
     <script src="https://jbialobr.github.io/JsQRScanner/jsPretty/jsqrscanner.nocache.js"></script>
 
+    <!-- app scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+    <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
+    <script src="./app.js"></script>
+
     <script>
-      function onQRCodeScanned(scannedText)
+      let process_lock = false;
+      function onQRCodeScanned(place_url)
       {
-        // TODO
-        console.log(scannedText);
-        location.href = scannedText;
+        // capture only first time
+        if (process_lock) return
+        process_lock = true;
+
+        // update db
+        Db.add(place_url);
+
+        // back to list screen in 100 ms
+        setTimeout(_ => {
+          location.href = place_url;
+        }, 100);
       }
       
       function provideVideo()
