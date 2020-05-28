@@ -1,6 +1,12 @@
 # bantuek-thaichana
 
-### Special Thanks <a href='https://www.thaichana.com'>thaichana.com</a> 🙏
+### Features
+* Check-In / Check-Out
+* Shop history
+
+### Browser Support
+* iOS -> Safari
+* Android -> Chrome, Firefox 
 
 ### JS Libraries
 * https://jquery.com/
@@ -10,5 +16,6 @@
 
 ### TODO
 * update ui of list
-* browser support ( ios/safari, android/chrome )
 * add to home screen
+
+### Special Thanks <a href='https://www.thaichana.com'>thaichana.com</a> 🙏
