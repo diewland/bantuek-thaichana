@@ -5,12 +5,10 @@
 ### JS Libraries
 * https://jquery.com/
 * https://getbootstrap.com/
-* https://momentjs.com/
 * https://github.com/jbialobr/JsQRScanner
 * https://github.com/diewland/disk.js
 
 ### TODO
-* remove moment, query name from api
 * check-in/check-out button
 * online status
 * browser support ( ios/safari, android/chrome )

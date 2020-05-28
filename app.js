@@ -1,7 +1,5 @@
 let APP_TITLE = 'DIEWLAND_BTCCN';
-let APP_VERSION = '0.0.1';
-
-let FMT_DATETIME = 'YYYY/MM/DD H:mm:ss';
+let APP_VERSION = '0.0.2';
 
 // common
 
@@ -23,7 +21,7 @@ let Db = {
     }
     else { // add new row
       data.push({
-        title: moment().format(FMT_DATETIME),
+        title: '---TODO---', // TODO
         url: url,
         timestamp: ts(),
       });
