@@ -52,13 +52,12 @@
         process_lock = true;
 
         // update db
-        Db.add(place_url, result.app_id, result.shop_id, _ => {
-          // back to list screen in 100 ms
+        let app_id = result.app_id;
+        let shop_id = result.shop_id;
+        Db.add(place_url, app_id, shop_id, checked_in => {
+          // check-in/out in 100 ms
           setTimeout(_ => {
-            //
-            // TODO change to check-in/check-out
-            //
-            location.href = place_url;
+            Thaichana.check_in(app_id, shop_id, checked_in);
           }, 100);
         });
       }

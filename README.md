@@ -9,7 +9,6 @@
 * https://github.com/diewland/disk.js
 
 ### TODO
-* check-in/check-out button
-* online status
+* update ui of list
 * browser support ( ios/safari, android/chrome )
 * add to home screen

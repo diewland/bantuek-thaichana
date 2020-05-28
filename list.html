@@ -52,6 +52,7 @@
 
     <!-- app scripts -->
     <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
+    <script src="./thaichana.js"></script>
     <script src="./app.js"></script>
 
     <script>
@@ -75,6 +76,12 @@
         // sort by timestamp desc
         return b.timestamp - a.timestamp;
       }).forEach(place => {
+
+        let checked_in = place.checked_in || false;
+        let html_action = checked_in ? "<a class='btn btn-checkin btn-warning' href='#/'>เช็คเอาท์</a>"
+                                     : "<a class='btn btn-checkin btn-success' href='#/'>เช็คอิน</a>";
+
+        // TODO update ui
         $('.list-group').append(`
           <li class="list-group-item d-flex justify-content-between align-items-center"
               data-title="${place.title}"
@@ -83,7 +90,7 @@
               <span class='place-title'>${place.title}</span>
               <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
             </span>
-            <a class='btn btn-checkin btn-success' href='#/'>เลือก</a>
+            ${html_action}
           </li>
         `);
       });
@@ -108,14 +115,16 @@
       $('body').on('click', '.btn-checkin', evt => {
         let [ $root, title, url ] = get_row_data(evt);
 
-        // update place timestamp
+        // update place timestamp, checked_in
         let row = data.filter(r => r.url == url)[0];
-        if (row) row.timestamp = ts();
+        let new_checked_in = !row.checked_in;
+        row.timestamp = ts();
+        row.checked_in = new_checked_in;
         update_disk();
 
-        // go to checkin/checkout in 100 ms
+        // check-in/check-out in 100 ms
         setTimeout(_ => {
-          location.href = url;
+          Thaichana.check_in(row.app_id, row.shop_id, new_checked_in);
         }, 100);
       });
 
