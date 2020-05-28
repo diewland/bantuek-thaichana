@@ -10,4 +10,8 @@
 * https://github.com/diewland/disk.js
 
 ### TODO
+* remove moment, query name from api
+* check-in/check-out button
+* online status
+* browser support ( ios/safari, android/chrome )
 * add to home screen
