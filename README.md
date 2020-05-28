@@ -1,4 +1,4 @@
-# bantuek-thaichana
+# bantuek-thaichana v.0.0.2
 
 ### Features
 * Check-In / Check-Out
