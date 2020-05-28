@@ -4,9 +4,9 @@
 * Check-In / Check-Out
 * Shop history
 
-### Browser Support
+### Recommend Browser
 * iOS -> Safari
-* Android -> Chrome, Firefox 
+* Android -> Chrome
 
 ### JS Libraries
 * https://jquery.com/
@@ -16,6 +16,6 @@
 
 ### TODO
 * update ui of list
-* add to home screen
+* add to home screen ios icon
 
 ### Special Thanks <a href='https://www.thaichana.com'>thaichana.com</a> 🙏
