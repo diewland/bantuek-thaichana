@@ -36,23 +36,31 @@
 
     <!-- app scripts -->
     <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
+    <script src="./thaichana.js"></script>
     <script src="./app.js"></script>
 
     <script>
       let process_lock = false;
       function onQRCodeScanned(place_url)
       {
+        // check url pattern
+        let result = Thaichana.extract_shop_url(place_url);
+        if (result === null) return
+
         // capture only first time
         if (process_lock) return
         process_lock = true;
 
         // update db
-        Db.add(place_url);
-
-        // back to list screen in 100 ms
-        setTimeout(_ => {
-          location.href = place_url;
-        }, 100);
+        Db.add(place_url, result.app_id, result.shop_id, _ => {
+          // back to list screen in 100 ms
+          setTimeout(_ => {
+            //
+            // TODO change to check-in/check-out
+            //
+            location.href = place_url;
+          }, 100);
+        });
       }
       
       function provideVideo()
