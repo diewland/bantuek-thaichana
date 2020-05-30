@@ -31,7 +31,24 @@ let Thaichana = {
                    : Thaichana.URL_CHECK_OUT;
     url = url.replace('<app_id>', app_id);
     url = url.replace('<shop_id>', shop_id);
-    location.href = url;
+    Thaichana.jump_to(url);
+  },
+
+  // common
+  jump_to: url => {
+    if (Thaichana.is_safari()) {
+      window.open(url);
+      location.href = './list.html';
+    }
+    else {
+      location.href = url;
+    }
+  },
+  is_safari: _ => {
+    return navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+           navigator.userAgent &&
+           navigator.userAgent.indexOf('CriOS') == -1 &&
+           navigator.userAgent.indexOf('FxiOS') == -1;
   },
 
 }
