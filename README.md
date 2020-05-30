@@ -20,5 +20,5 @@
 * add to home screen
 
 ### Special Thanks
-* <a href='https://www.thaichana.com'>thaichana.com</a> 🙏
-* <a href='https://realfavicongenerator.net/>realfavicongenerator.net</a>
+* https://www.thaichana.com 🙏
+* https://realfavicongenerator.net
