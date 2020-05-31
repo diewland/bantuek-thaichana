@@ -57,7 +57,7 @@
         Db.add(place_url, app_id, shop_id, checked_in => {
           // check-in/out in 100 ms
           setTimeout(_ => {
-            Thaichana.check_in(app_id, shop_id, checked_in);
+            Thaichana.check_in(app_id, shop_id, checked_in, true);
           }, 100);
         });
       }

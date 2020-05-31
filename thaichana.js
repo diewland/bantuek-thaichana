@@ -26,21 +26,28 @@ let Thaichana = {
   },
 
   // check-in/out
-  check_in: (app_id, shop_id, flag=true) => {
+  check_in: (app_id, shop_id, flag=true, screen=false) => {
     let url = flag ? Thaichana.URL_CHECK_IN
                    : Thaichana.URL_CHECK_OUT;
     url = url.replace('<app_id>', app_id);
     url = url.replace('<shop_id>', shop_id);
-    Thaichana.jump_to(url);
+    Thaichana.jump_to(url, screen);
   },
 
-  // common
-  jump_to: url => {
+  // re-direct page logic
+  jump_to: (url, screen) => {
     if (Thaichana.is_safari()) {
-      window.open(url);
-      location.href = './list.html';
+      if (screen) { // from scan screen
+        Thaichana.push_pending_url(url, _ => {
+          location.href = './check_in.html';
+        });
+      }
+      else { // from list screen
+        window.open(url);
+        location.href = './list.html';
+      }
     }
-    else {
+    else { // chrome
       location.href = url;
     }
   },
@@ -49,6 +56,18 @@ let Thaichana = {
            navigator.userAgent &&
            navigator.userAgent.indexOf('CriOS') == -1 &&
            navigator.userAgent.indexOf('FxiOS') == -1;
+  },
+
+  // pending url
+  KEY_PENDING_URL: 'DIEWLAND_BTCCN_PENDING_URL',
+  push_pending_url: (url, callback) => {
+    localStorage.setItem(Thaichana.KEY_PENDING_URL, url);
+    setTimeout(callback, 100);
+  },
+  pop_pending_url: _ => {
+    let url = localStorage.getItem(Thaichana.KEY_PENDING_URL) || null;
+    if (url !== null) localStorage.removeItem(Thaichana.KEY_PENDING_URL);
+    return url;
   },
 
 }
