@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "com.diewland.thaichana",
+               "sha256_cert_fingerprints": ["AD:25:DE:85:AE:90:45:79:9B:1B:8C:11:0E:7C:26:BD:53:B4:A4:3E:A8:7B:87:AF:EF:D1:21:C0:4F:57:7D:DA"] }
+}]
