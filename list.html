@@ -94,11 +94,30 @@
               data-url="${place.url}">
             <span>
               <span class='place-title'>${place.title}</span>
+              <sub><a class='btn-edit text-primary' href='#/'>แก้</a></sub>
               <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
             </span>
             ${html_action}
           </li>
         `);
+      });
+
+      // bind edit button
+      $('body').on('click', '.btn-edit', evt => {
+        let [ $root, title, url ] = get_row_data(evt);
+
+        // prompt
+        let new_title = prompt('แก้ชื่อร้านค้า', title);
+        if ((new_title) && (new_title != title)) {
+
+          // update place title
+          let row = data.filter(r => r.url == url)[0];
+          row.title = new_title;
+          update_disk();
+
+          // update new title to screen
+          $root.find('.place-title').html(new_title);
+        }
       });
 
       // bind delete button
