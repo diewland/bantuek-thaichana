@@ -1,5 +1,5 @@
 let APP_TITLE = 'DIEWLAND_BTCCN';
-let APP_VERSION = '0.0.3';
+let APP_VERSION = '0.0.4';
 
 // common
 

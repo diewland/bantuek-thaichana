@@ -73,8 +73,14 @@
 
       // render places
       data.sort((a, b) => {
-        // sort by timestamp desc
-        return b.timestamp - a.timestamp;
+        if (a.checked_in !== b.checked_in) {
+          // sort by check-out, check-in
+          return b.checked_in - a.checked_in;
+        }
+        else {
+          // sort by timestamp desc
+          return b.timestamp - a.timestamp;
+        }
       }).forEach(place => {
 
         let checked_in = place.checked_in || false;
