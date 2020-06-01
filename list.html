@@ -13,13 +13,26 @@
       html, body{
         height: 100%;
       }
-      .list-group {
+      .place-list {
         position: fixed;
         height: calc(100% - 48px);
         left: 0;
         right: 0;
         bottom: 48px;
         overflow: auto;
+      }
+      .place-list .welcome {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .place-list .row {
+        padding: .5rem 1rem;
+        border-bottom: 1px solid rgba(0,0,0,.125);
+      }
+      .place-list .row:first-child {
+        border-top: 1px solid rgba(0,0,0,.125);
       }
       .bottom {
         position: fixed;
@@ -38,7 +51,11 @@
   <body>
 
     <!-- list -->
-    <ul class="list-group"></ul>
+    <div class='place-list'>
+      <div class='welcome'>
+        <h3>กดปุ่มด้านล่างเพื่อสแกน</h3>
+      </div>
+    </div>
 
     <!-- bottom -->
     <div class='bottom'>
@@ -65,11 +82,14 @@
         Disk.set(APP_TITLE, data);
       }
       function get_row_data (evt) {
-        let $root = $(evt.target).parents('li');
+        let $root = $(evt.target).parents('div.row');
         let title = $root.attr('data-title');
         let url = $root.attr('data-url');
         return [ $root, title, url ];
       }
+
+      // prepare place list
+      if (data.length > 0) $('.place-list').html('');
 
       // render places
       data.sort((a, b) => {
@@ -87,18 +107,16 @@
         let html_action = checked_in ? "<a class='btn btn-checkin btn-warning' href='#/'>เช็คเอาท์</a>"
                                      : "<a class='btn btn-checkin btn-success' href='#/'>เช็คอิน</a>";
 
-        // TODO update ui
-        $('.list-group').append(`
-          <li class="list-group-item d-flex justify-content-between align-items-center"
-              data-title="${place.title}"
-              data-url="${place.url}">
-            <span>
+        $('.place-list').append(`
+          <div class='row align-items-center'
+               data-title="${place.title}" data-url="${place.url}">
+            <div class='col-9'>
               <span class='place-title'>${place.title}</span>
               <sub><a class='btn-edit text-primary' href='#/'>แก้</a></sub>
               <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
-            </span>
-            ${html_action}
-          </li>
+            </div>
+            <div class='col-3 pl-0 text-right'>${html_action}</div>
+          </div>
         `);
       });
 
