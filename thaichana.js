@@ -1,5 +1,8 @@
 let Thaichana = {
 
+  // const
+  WIN: 'WIN_BTCCN',
+
   // api
   URL_SHOP_INFO: 'https://api-customer.thaichana.com/shop/<app_id>/<shop_id>/qr',
   URL_CHECK_IN:  'https://qr.thaichana.com/callback?appId=<app_id>&shopId=<shop_id>&type=checkin&token=&mode=line&closeBtn=',
@@ -43,7 +46,7 @@ let Thaichana = {
         });
       }
       else { // from list screen
-        window.open(url);
+        window.open(url, Thaichana.WIN);
         location.href = './list.html';
       }
     }
