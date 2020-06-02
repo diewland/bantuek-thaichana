@@ -28,8 +28,9 @@
         height: 100%;
       }
       .place-list .row {
-        padding: .5rem 1rem;
+        padding: .75rem 1.25rem;
         border-bottom: 1px solid rgba(0,0,0,.125);
+        margin: 0px;
       }
       .place-list .row:first-child {
         border-top: 1px solid rgba(0,0,0,.125);
@@ -110,12 +111,14 @@
         $('.place-list').append(`
           <div class='row align-items-center'
                data-title="${place.title}" data-url="${place.url}">
-            <div class='col-9'>
+            <div class='col-9 px-0'>
               <span class='place-title'>${place.title}</span>
-              <sub><a class='btn-edit text-primary' href='#/'>แก้</a></sub>
-              <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
+              <div style='margin-top: -5px;'>
+                <sub><a class='btn-edit text-primary' href='#/'>แก้</a></sub>
+                <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
+              </div>
             </div>
-            <div class='col-3 pl-0 text-right'>${html_action}</div>
+            <div class='col-3 px-0 text-right'>${html_action}</div>
           </div>
         `);
       });
