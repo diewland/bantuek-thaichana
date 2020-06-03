@@ -9,10 +9,11 @@
 * Android -> Chrome
 
 ### JS Libraries
-* https://jquery.com
-* https://getbootstrap.com
-* https://github.com/jbialobr/JsQRScanner
-* https://github.com/diewland/disk.js
+* basic - https://jquery.com
+* ui - https://getbootstrap.com
+* qr-code-scanner - https://github.com/jbialobr/JsQRScanner
+* qr-code-scanner - https://github.com/mebjas/html5-qrcode
+* local-storage - https://github.com/diewland/disk.js
 
 ### Special Thanks
 * https://www.thaichana.com 🙏

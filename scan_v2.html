@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- style -->
+    <style type='text/css'>
+      .btn-back {
+        border-radius: 0px;
+        position: fixed;
+        bottom: 0px;
+      }
+    </style>
+
+    <title>บันทึกไทยชนะ</title>
+  </head>
+  <body>
+
+    <!-- camera -->
+    <div id="reader">
+      <div class='bg-secondary text-center p-3' style='height: 100%;'>
+        <h3 class='text-white'>กล้องกำลังเปิด..</h3>
+      </div>
+    </div>
+
+    <!-- back button -->
+    <a class='btn btn-back btn-lg btn-secondary w-100' href='#/'>ถอยกลับ</a>
+
+    <!-- bottom scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="./libs/html5-qrcode.min.js"></script>
+
+    <!-- app scripts -->
+    <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
+    <script src="./thaichana.js"></script>
+    <script src="./app.js"></script>
+
+    <script>
+
+      // on scanned
+      let process_lock = false;
+      function onQRCodeScanned(place_url) {
+        // check url pattern
+        let result = Thaichana.extract_shop_url(place_url);
+        if (result === null) return
+
+        // capture only first time
+        if (process_lock) return
+        process_lock = true;
+
+        // update db
+        let app_id = result.app_id;
+        let shop_id = result.shop_id;
+        Db.add(place_url, app_id, shop_id, checked_in => {
+          // check-in/out in 100 ms
+          setTimeout(_ => {
+            Thaichana.check_in(app_id, shop_id, checked_in, true);
+          }, 100);
+        });
+      }
+
+      // Create instance of the object. The only argument is the "id" of HTML element created above.
+      const html5QrCode = new Html5Qrcode("reader");
+
+      // This method will trigger user permissions
+      Html5Qrcode.getCameras().then(devices => {
+        //
+        // devices would be an array of objects of type:
+        // { id: "id", label: "label" }
+        //
+        if (devices && devices.length) {
+          var cameraId = devices[0].id;
+          // use this to start scanning.
+          html5QrCode.start(
+            cameraId,     // retreived in the previous step.
+            {
+              fps: 5,     // sets the framerate to 5 frame per second
+              qrbox: 250  // sets only 250 X 250 region of viewfinder to
+                          // scannable, rest shaded.
+            },
+            qrCodeMessage => {
+              // do something when code is read. For example:
+              // console.log(`QR Code detected: ${qrCodeMessage}`);
+              onQRCodeScanned(qrCodeMessage);
+            },
+            errorMessage => {
+              // parse error, ideally ignore it. For example:
+              // console.log(`QR Code no longer in front of camera.`);
+            })
+          .catch(err => {
+            // Start failed, handle it. For example,
+            alert(`Unable to start scanning, error: ${err}`);
+          });
+        }
+      }).catch(err => {
+        alert(`Unable to list cameras, error: ${err}`);
+      });
+
+      // back button
+      $('.btn-back').click(_ => {
+        html5QrCode.stop().then(ignore => {
+          // QR Code scanning is stopped.
+          // console.log("QR Code scanning stopped.");
+          location.href = './list.html';
+        }).catch(err => {
+          // Stop failed, handle it.
+          alert("Unable to stop scanning.");
+        });
+      });
+
+    </script>
+
+  </body>
+</html>
