@@ -74,7 +74,14 @@
         // { id: "id", label: "label" }
         //
         if (devices && devices.length) {
-          var cameraId = devices[0].id;
+          // find back camera
+          let cameraId = devices[0].id;
+          let back_cameras = devices.filter(d => {
+            return d.label.toLowerCase().indexOf('back') > -1;
+          });
+          if (back_cameras.length > 0) {
+            cameraId = back_cameras[0].id;
+          }
           // use this to start scanning.
           html5QrCode.start(
             cameraId,     // retreived in the previous step.
