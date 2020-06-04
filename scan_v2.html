@@ -42,6 +42,20 @@
 
     <script>
 
+      // Create instance of the object. The only argument is the "id" of HTML element created above.
+      const html5QrCode = new Html5Qrcode("reader");
+
+      // close camera function
+      function close_camera (callback) {
+        html5QrCode.stop().then(ignore => {
+          // QR Code scanning is stopped.
+          callback();
+        }).catch(err => {
+          // Stop failed, handle it.
+          alert("Unable to stop scanning.");
+        });
+      }
+
       // on scanned
       let process_lock = false;
       function onQRCodeScanned(place_url) {
@@ -59,13 +73,12 @@
         Db.add(place_url, app_id, shop_id, checked_in => {
           // check-in/out in 100 ms
           setTimeout(_ => {
-            Thaichana.check_in(app_id, shop_id, checked_in, true);
+            close_camera(_ => {
+              Thaichana.check_in(app_id, shop_id, checked_in, true);
+            });
           }, 100);
         });
       }
-
-      // Create instance of the object. The only argument is the "id" of HTML element created above.
-      const html5QrCode = new Html5Qrcode("reader");
 
       // This method will trigger user permissions
       Html5Qrcode.getCameras().then(devices => {
@@ -92,7 +105,6 @@
             },
             qrCodeMessage => {
               // do something when code is read. For example:
-              // console.log(`QR Code detected: ${qrCodeMessage}`);
               onQRCodeScanned(qrCodeMessage);
             },
             errorMessage => {
@@ -110,13 +122,8 @@
 
       // back button
       $('.btn-back').click(_ => {
-        html5QrCode.stop().then(ignore => {
-          // QR Code scanning is stopped.
-          // console.log("QR Code scanning stopped.");
+        close_camera(_ => {
           location.href = './list.html';
-        }).catch(err => {
-          // Stop failed, handle it.
-          alert("Unable to stop scanning.");
         });
       });
 
