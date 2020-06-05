@@ -1,8 +1,9 @@
 let APP_TITLE = 'DIEWLAND_BTCCN';
 let APP_VERSION = '0.0.5';
 
-// common
+// datetime
 
+let FMT_DATETIME = 'YYYY/MM/DD H:mm:ss';
 let ts = _ => +(new Date());
 
 // storage

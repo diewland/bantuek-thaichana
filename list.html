@@ -69,6 +69,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
     <!-- app scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
     <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
     <script src="./thaichana.js"></script>
     <script src="./app.js"></script>
@@ -104,6 +105,7 @@
         }
       }).forEach(place => {
 
+        let last_timestamp = moment(place.timestamp).format(FMT_DATETIME);
         let checked_in = place.checked_in || false;
         let html_action = checked_in ? "<a class='btn btn-checkin btn-warning' href='#/'>เช็คเอาท์</a>"
                                      : "<a class='btn btn-checkin btn-success' href='#/'>เช็คอิน</a>";
@@ -116,6 +118,7 @@
               <div style='margin-top: -5px;'>
                 <sub><a class='btn-edit text-primary' href='#/'>แก้</a></sub>
                 <sub><a class='btn-del text-danger' href='#/'>ลบ</a></sub>
+                <sub class='text-secondary font-italic'>${last_timestamp}</sub>
               </div>
             </div>
             <div class='col-3 px-0 text-right'>${html_action}</div>

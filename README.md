@@ -11,6 +11,7 @@
 ### JS Libraries
 * basic - https://jquery.com
 * ui - https://getbootstrap.com
+* datetime - https://momentjs.com
 * qr-code-scanner - https://github.com/jbialobr/JsQRScanner
 * qr-code-scanner - https://github.com/mebjas/html5-qrcode
 * local-storage - https://github.com/diewland/disk.js
