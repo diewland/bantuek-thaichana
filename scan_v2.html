@@ -104,7 +104,9 @@
         //
         if (devices && devices.length) {
           // devices found, save to disk
-          Db.save_cams(devices);
+          if (!Thaichana.is_safari()) {
+            Db.save_cams(devices);
+          }
           // find back camera
           let cameraId = devices[devices.length-1].id;
           let back_cameras = devices.filter(d => {
