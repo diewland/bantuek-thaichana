@@ -1,5 +1,6 @@
 let APP_TITLE = 'DIEWLAND_BTCCN';
-let APP_VERSION = '0.0.5';
+let APP_VERSION = '0.0.6';
+let KEY_CAMERAS = `${APP_TITLE}_CAMERAS`;
 
 // datetime
 
@@ -46,5 +47,9 @@ let Db = {
       });
     }
   },
+
+  // cameras
+  save_cams: (cameras) => Disk.set(KEY_CAMERAS, cameras),
+  load_cams: () => Disk.get(KEY_CAMERAS),
 
 };

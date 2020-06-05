@@ -45,6 +45,22 @@
       // Create instance of the object. The only argument is the "id" of HTML element created above.
       const html5QrCode = new Html5Qrcode("reader");
 
+      // cache camera list to reduce number of camera permission request
+      function get_cameras (callback) {
+        let cameras = Db.load_cams();
+        if (cameras === null) {
+          Html5Qrcode.getCameras().then(devices => {
+            // do not save devices to disk yet
+            callback(devices);
+          }).catch(err => {
+            alert(`Unable to list cameras, error: ${err}`);
+          });
+        }
+        else { // cache
+          callback(cameras);
+        }
+      }
+
       // close camera function
       function close_camera (callback) {
         html5QrCode.stop().then(ignore => {
@@ -81,14 +97,16 @@
       }
 
       // This method will trigger user permissions
-      Html5Qrcode.getCameras().then(devices => {
+      get_cameras(devices => {
         //
         // devices would be an array of objects of type:
         // { id: "id", label: "label" }
         //
         if (devices && devices.length) {
+          // devices found, save to disk
+          Db.save_cams(devices);
           // find back camera
-          let cameraId = devices[0].id;
+          let cameraId = devices[devices.length-1].id;
           let back_cameras = devices.filter(d => {
             return d.label.toLowerCase().indexOf('back') > -1;
           });
@@ -116,8 +134,6 @@
             alert(`Unable to start scanning, error: ${err}`);
           });
         }
-      }).catch(err => {
-        alert(`Unable to list cameras, error: ${err}`);
       });
 
       // back button
