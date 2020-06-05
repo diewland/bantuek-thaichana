@@ -48,7 +48,7 @@
       // cache camera list to reduce number of camera permission request
       function get_cameras (callback) {
         let cameras = Db.load_cams();
-        if (cameras === null) {
+        if ((cameras === null)||(Thaichana.is_safari())) {
           Html5Qrcode.getCameras().then(devices => {
             // do not save devices to disk yet
             callback(devices);
