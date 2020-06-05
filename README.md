@@ -1,4 +1,4 @@
-# bantuek-thaichana v.0.0.5
+# bantuek-thaichana v.0.0.6
 
 ### Features
 * Check-In / Check-Out
@@ -12,10 +12,10 @@
 * basic - https://jquery.com
 * ui - https://getbootstrap.com
 * datetime - https://momentjs.com
-* qr-code-scanner - https://github.com/jbialobr/JsQRScanner
-* qr-code-scanner - https://github.com/mebjas/html5-qrcode
+* qr#v1 - https://github.com/jbialobr/JsQRScanner
+* qr#v2 - https://github.com/mebjas/html5-qrcode
 * local-storage - https://github.com/diewland/disk.js
 
 ### Special Thanks
-* https://www.thaichana.com 🙏
 * https://realfavicongenerator.net
+* https://www.thaichana.com 🙏
