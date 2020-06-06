@@ -48,12 +48,22 @@
       // cache camera list to reduce number of camera permission request
       function get_cameras (callback) {
         let cameras = Db.load_cams();
-        if ((cameras === null)||(Thaichana.is_safari())) {
+        // no cache or safafi
+        if ((cameras === null) || Thaichana.is_safari()) {
           Html5Qrcode.getCameras().then(devices => {
-            // do not save devices to disk yet
-            callback(devices);
+            if (devices && devices.length) {
+              // save cache to chrome
+              if (Thaichana.is_chrome()) {
+                Db.save_cams(devices);
+              }
+              callback(devices);
+            }
+            else {
+              callback([]);
+            }
           }).catch(err => {
             alert(`Unable to list cameras, error: ${err}`);
+            callback([]);
           });
         }
         else { // cache
@@ -98,44 +108,33 @@
 
       // This method will trigger user permissions
       get_cameras(devices => {
-        //
-        // devices would be an array of objects of type:
-        // { id: "id", label: "label" }
-        //
-        if (devices && devices.length) {
-          // devices found, save to disk
-          if (!Thaichana.is_safari()) {
-            Db.save_cams(devices);
-          }
-          // find back camera
-          let cameraId = devices[devices.length-1].id;
-          let back_cameras = devices.filter(d => {
-            return d.label.toLowerCase().indexOf('back') > -1;
-          });
-          if (back_cameras.length > 0) {
-            cameraId = back_cameras[0].id;
-          }
-          // use this to start scanning.
-          html5QrCode.start(
-            cameraId,     // retreived in the previous step.
-            {
-              fps: 5,     // sets the framerate to 5 frame per second
-              qrbox: 250  // sets only 250 X 250 region of viewfinder to
-                          // scannable, rest shaded.
-            },
-            qrCodeMessage => {
-              // do something when code is read. For example:
-              onQRCodeScanned(qrCodeMessage);
-            },
-            errorMessage => {
-              // parse error, ideally ignore it. For example:
-              // console.log(`QR Code no longer in front of camera.`);
-            })
-          .catch(err => {
-            // Start failed, handle it. For example,
-            alert(`Unable to start scanning, error: ${err}`);
-          });
+        // break if devices not found
+        if (devices.length == 0) return;
+        // find back camera
+        let cameraId = devices[devices.length-1].id;
+        let back_cameras = devices.filter(d => {
+          return d.label.toLowerCase().indexOf('back') > -1;
+        });
+        if (back_cameras.length > 0) {
+          cameraId = back_cameras[0].id;
         }
+        // use this to start scanning.
+        html5QrCode.start(
+          cameraId,     // retreived in the previous step.
+          {
+            fps: 5,     // sets the framerate to 5 frame per second
+            qrbox: 250  // sets only 250 X 250 region of viewfinder to
+                        // scannable, rest shaded.
+          },
+          qrCodeMessage => {
+            onQRCodeScanned(qrCodeMessage);
+          },
+          errorMessage => {
+            // console.log(`QR Code no longer in front of camera.`);
+          })
+        .catch(err => {
+          alert(`Unable to start scanning, error: ${err}`);
+        });
       });
 
       // back button

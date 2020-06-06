@@ -54,12 +54,15 @@ let Thaichana = {
       location.href = url;
     }
   },
+
+  // check browsers
   is_safari: _ => {
     return navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
            navigator.userAgent &&
            navigator.userAgent.indexOf('CriOS') == -1 &&
            navigator.userAgent.indexOf('FxiOS') == -1;
   },
+  is_chrome: _ => !Thaichana.is_safari(),
 
   // pending url
   KEY_PENDING_URL: 'DIEWLAND_BTCCN_PENDING_URL',
