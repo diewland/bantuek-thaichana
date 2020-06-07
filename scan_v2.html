@@ -68,7 +68,30 @@
         }
       }
 
-      // close camera function
+      // open camera
+      function open_camera (camera_id) {
+        html5QrCode.start(
+          camera_id,     // retreived in the previous step.
+          {
+            fps: 5,     // sets the framerate to 5 frame per second
+            qrbox: 250  // sets only 250 X 250 region of viewfinder to
+                        // scannable, rest shaded.
+          },
+          qrCodeMessage => {
+            onQRCodeScanned(qrCodeMessage);
+          },
+          errorMessage => {
+            // console.log(`QR Code no longer in front of camera.`);
+          })
+        .catch(err => {
+          // iOS, camera-id does not static
+          console.log('camera-id not found, remove from disk and scan again');
+          Db.remove_cams();
+          scan_qr();
+        });
+      }
+
+      // close camera
       function close_camera (callback) {
         html5QrCode.stop().then(ignore => {
           // QR Code scanning is stopped.
@@ -110,32 +133,15 @@
           // break if devices not found
           if (devices.length == 0) return;
           // find back camera
-          let cameraId = devices[devices.length-1].id;
+          let camera_id = devices[devices.length-1].id;
           let back_cameras = devices.filter(d => {
             return d.label.toLowerCase().indexOf('back') > -1;
           });
           if (back_cameras.length > 0) {
-            cameraId = back_cameras[0].id;
+            camera_id = back_cameras[0].id;
           }
           // use this to start scanning.
-          html5QrCode.start(
-            cameraId,     // retreived in the previous step.
-            {
-              fps: 5,     // sets the framerate to 5 frame per second
-              qrbox: 250  // sets only 250 X 250 region of viewfinder to
-                          // scannable, rest shaded.
-            },
-            qrCodeMessage => {
-              onQRCodeScanned(qrCodeMessage);
-            },
-            errorMessage => {
-              // console.log(`QR Code no longer in front of camera.`);
-            })
-          .catch(err => {
-            // alert(`Unable to start scanning, error: ${err}`);
-            Db.remove_cams(); // iOS, camera-id does not static
-            scan_qr();
-          });
+          open_camera(camera_id);
         });
       }
 
