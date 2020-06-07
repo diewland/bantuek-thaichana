@@ -49,13 +49,11 @@
       function get_cameras (callback) {
         let cameras = Db.load_cams();
         // no cache or safafi
-        if ((cameras === null) || Thaichana.is_safari()) {
+        if (cameras === null) {
           Html5Qrcode.getCameras().then(devices => {
             if (devices && devices.length) {
-              // save cache to chrome
-              if (Thaichana.is_chrome()) {
-                Db.save_cams(devices);
-              }
+              // save cache
+              Db.save_cams(devices);
               callback(devices);
             }
             else {
@@ -106,36 +104,41 @@
         });
       }
 
-      // This method will trigger user permissions
-      get_cameras(devices => {
-        // break if devices not found
-        if (devices.length == 0) return;
-        // find back camera
-        let cameraId = devices[devices.length-1].id;
-        let back_cameras = devices.filter(d => {
-          return d.label.toLowerCase().indexOf('back') > -1;
+      // open camera to scan qr
+      function scan_qr () {
+        // This method will trigger user permissions
+        get_cameras(devices => {
+          // break if devices not found
+          if (devices.length == 0) return;
+          // find back camera
+          let cameraId = devices[devices.length-1].id;
+          let back_cameras = devices.filter(d => {
+            return d.label.toLowerCase().indexOf('back') > -1;
+          });
+          if (back_cameras.length > 0) {
+            cameraId = back_cameras[0].id;
+          }
+          // use this to start scanning.
+          html5QrCode.start(
+            cameraId,     // retreived in the previous step.
+            {
+              fps: 5,     // sets the framerate to 5 frame per second
+              qrbox: 250  // sets only 250 X 250 region of viewfinder to
+                          // scannable, rest shaded.
+            },
+            qrCodeMessage => {
+              onQRCodeScanned(qrCodeMessage);
+            },
+            errorMessage => {
+              // console.log(`QR Code no longer in front of camera.`);
+            })
+          .catch(err => {
+            // alert(`Unable to start scanning, error: ${err}`);
+            Db.remove_cams(); // iOS, camera-id does not static
+            scan_qr();
+          });
         });
-        if (back_cameras.length > 0) {
-          cameraId = back_cameras[0].id;
-        }
-        // use this to start scanning.
-        html5QrCode.start(
-          cameraId,     // retreived in the previous step.
-          {
-            fps: 5,     // sets the framerate to 5 frame per second
-            qrbox: 250  // sets only 250 X 250 region of viewfinder to
-                        // scannable, rest shaded.
-          },
-          qrCodeMessage => {
-            onQRCodeScanned(qrCodeMessage);
-          },
-          errorMessage => {
-            // console.log(`QR Code no longer in front of camera.`);
-          })
-        .catch(err => {
-          alert(`Unable to start scanning, error: ${err}`);
-        });
-      });
+      }
 
       // back button
       $('.btn-back').click(_ => {
@@ -143,6 +146,9 @@
           location.href = './list.html';
         });
       });
+
+      // main
+      scan_qr();
 
     </script>
 

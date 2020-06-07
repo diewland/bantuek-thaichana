@@ -51,5 +51,6 @@ let Db = {
   // cameras
   save_cams: (cameras) => Disk.set(KEY_CAMERAS, cameras),
   load_cams: () => Disk.get(KEY_CAMERAS),
+  remove_cams: () => Disk.remove(KEY_CAMERAS),
 
 };
