@@ -133,7 +133,9 @@
               // console.log(`QR Code no longer in front of camera.`);
             })
           .catch(err => {
-            alert(`Unable to start scanning, error: ${err}`);
+            // alert(`Unable to start scanning, error: ${err}`);
+            Db.remove_cams(); // iOS, camera-id does not static
+            scan_qr();
           });
         });
       }
