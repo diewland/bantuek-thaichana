@@ -48,7 +48,6 @@
       // cache camera list to reduce number of camera permission request
       function get_cameras (callback) {
         let cameras = Db.load_cams();
-        // no cache or safafi
         if (cameras === null) {
           Html5Qrcode.getCameras().then(devices => {
             if (devices && devices.length) {
