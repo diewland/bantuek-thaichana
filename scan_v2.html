@@ -69,6 +69,8 @@
       }
 
       // open camera
+      let cam_retry = 0;
+      let max_retry = 3;
       function open_camera (camera_id) {
         html5QrCode.start(
           camera_id,     // retreived in the previous step.
@@ -84,10 +86,16 @@
             // console.log(`QR Code no longer in front of camera.`);
           })
         .catch(err => {
-          // iOS, camera-id does not static
-          console.log('camera-id not found, remove from disk and scan again');
-          Db.remove_cams();
-          scan_qr();
+          cam_retry += 1;
+          if (cam_retry <= max_retry) {
+            // iOS, camera-id does not static
+            console.log(`camera-id not found #${cam_retry}, remove from disk and scan again`);
+            Db.remove_cams();
+            scan_qr();
+          }
+          else {
+            alert(`Unable to start scanning, error: ${err}`);
+          }
         });
       }
 
