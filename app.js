@@ -1,11 +1,21 @@
 let APP_TITLE = 'DIEWLAND_BTCCN';
-let APP_VERSION = '0.0.6';
+let APP_VERSION = '0.0.7';
 let KEY_CAMERAS = `${APP_TITLE}_CAMERAS`;
+let KEY_CAM_LIB = `${APP_TITLE}_CAM_LIB`;
 
 // datetime
 
 let FMT_DATETIME = 'YYYY/MM/DD H:mm:ss';
 let ts = _ => +(new Date());
+
+// camera libraries
+
+let cam_libs = {
+  'JsQRScanner':  './scan.html',
+  'html5-qrcode': './scan_v2.html',
+};
+
+let get_scan_url = _ => cam_libs[Db.get_cam_lib()];
 
 // storage
 
@@ -52,5 +62,10 @@ let Db = {
   save_cams: (cameras) => Disk.set(KEY_CAMERAS, cameras),
   load_cams: () => Disk.get(KEY_CAMERAS),
   remove_cams: () => Disk.remove(KEY_CAMERAS),
+
+  // camera lib
+  set_cam_lib: (lib_name) => Disk.set(KEY_CAM_LIB, lib_name),
+  get_cam_lib: _ => Disk.get(KEY_CAM_LIB) || 'html5-qrcode',
+  remove_cam_lib: _ => Disk.remove(KEY_CAM_LIB),
 
 };

@@ -60,7 +60,7 @@
 
     <!-- bottom -->
     <div class='bottom'>
-      <a class='btn btn-scan btn-lg btn-danger w-100' href='./scan_v2.html'>สแกน</a>
+      <a class='btn btn-scan btn-lg btn-danger w-100' href='#/'>สแกน</a>
     </div>
 
     <!-- bottom scripts -->
@@ -175,6 +175,11 @@
         setTimeout(_ => {
           Thaichana.check_in(row.app_id, row.shop_id, new_checked_in);
         }, 100);
+      });
+
+      // bind scan button
+      $('.btn-scan').click(_ => {
+        location.href = get_scan_url();
       });
 
     </script>

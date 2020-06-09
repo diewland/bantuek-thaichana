@@ -15,11 +15,25 @@
         position: fixed;
         bottom: 0px;
       }
+      #cam_lib {
+        border-radius: 0px;
+      }
     </style>
 
     <title>บันทึกไทยชนะ</title>
   </head>
   <body>
+
+    <!-- change camera lib -->
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="cam_lib">📷</label>
+      </div>
+      <select class="custom-select" id="cam_lib">
+        <option value="JsQRScanner">JsQRScanner</option>
+        <option value="html5-qrcode" selected>html5-qrcode</option>
+      </select>
+    </div>
 
     <!-- camera -->
     <div id="reader">
@@ -152,6 +166,13 @@
           open_camera(camera_id);
         });
       }
+
+      // change cam lib
+      $('#cam_lib').change(evt => {
+        let lib_name = $(evt.target).val();
+        Db.set_cam_lib(lib_name);
+        location.href = get_scan_url();
+      });
 
       // back button
       $('.btn-back').click(_ => {
