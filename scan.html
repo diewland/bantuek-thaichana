@@ -51,6 +51,7 @@
     <!-- app scripts -->
     <script src="https://diewland.github.io/disk.js/dist/disk.js"></script>
     <script src="./thaichana.js"></script>
+    <script src="./camera.js"></script>
     <script src="./app.js"></script>
 
     <script>
@@ -77,6 +78,7 @@
         });
       }
       
+      /*
       function provideVideo()
       {
           var n = navigator;
@@ -121,14 +123,43 @@
               });        
           });                
       }
+      */
       
+      function provideVideo() {
+        return navigator.mediaDevices.enumerateDevices()
+        .then(function(devices) {
+          var exCameras = [];
+          devices.forEach(function(device) {
+            if (device.kind === 'videoinput') {
+              exCameras.push({
+                id: device.deviceId,
+                label: device.label,
+              })
+            }
+          });
+          return Promise.resolve(exCameras);
+        }).then(function(devices){
+          let back_cam = find_back_camera(devices);
+          if (back_cam === null) {
+            return Promise.reject('Could not find a webcam');
+          }
+          return navigator.mediaDevices.getUserMedia({
+            video: {
+              'optional': [{
+                'sourceId': back_cam.id,
+              }]
+            }
+          });
+        });
+      }
+
       //this function will be called when JsQRScanner is ready to use
       function JsQRScannerReady()
       {
           //create a new scanner passing to it a callback function that will be invoked when
           //the scanner succesfully scan a QR code
-          var jbScanner = new JsQRScanner(onQRCodeScanned);
-          //var jbScanner = new JsQRScanner(onQRCodeScanned, provideVideo);
+          //var jbScanner = new JsQRScanner(onQRCodeScanned);
+          var jbScanner = new JsQRScanner(onQRCodeScanned, provideVideo);
           //reduce the size of analyzed image to increase performance on mobile devices
           jbScanner.setSnapImageMaxSize(300);
         var scannerParentElement = document.getElementById("scanner");

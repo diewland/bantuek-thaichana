@@ -83,8 +83,8 @@
       function update_disk () {
         Disk.set(APP_TITLE, data);
       }
-      function get_row_data (evt) {
-        let $root = $(evt.target).parents('div.row');
+      function get_row_data (target) {
+        let $root = $(target).parents('div.row');
         let title = $root.attr('data-title');
         let url = $root.attr('data-url');
         return [ $root, title, url ];
@@ -107,8 +107,8 @@
 
         let last_timestamp = moment(place.timestamp).format(FMT_DATETIME);
         let checked_in = place.checked_in || false;
-        let html_action = checked_in ? "<a class='btn btn-checkin btn-warning' href='#/'>เช็คเอาท์</a>"
-                                     : "<a class='btn btn-checkin btn-success' href='#/'>เช็คอิน</a>";
+        let html_action = checked_in ? "<a class='btn btn-checkin btn-warning w-100' href='#/'>เช็คเอาท์</a>"
+                                     : "<a class='btn btn-checkin btn-success w-100' href='#/'>เช็คอิน</a>";
 
         $('.place-list').append(`
           <div class='row align-items-center'
@@ -128,7 +128,7 @@
 
       // bind edit button
       $('body').on('click', '.btn-edit', evt => {
-        let [ $root, title, url ] = get_row_data(evt);
+        let [ $root, title, url ] = get_row_data(evt.target);
 
         // prompt
         let new_title = prompt('แก้ชื่อร้านค้า', title);
@@ -146,7 +146,7 @@
 
       // bind delete button
       $('body').on('click', '.btn-del', evt => {
-        let [ $root, title, url ] = get_row_data(evt);
+        let [ $root, title, url ] = get_row_data(evt.target);
 
         // confirm
         let confrm = confirm(`ยืนยันการลบ ${title}`);
@@ -162,7 +162,7 @@
 
       // bind check in/out button
       $('body').on('click', '.btn-checkin', evt => {
-        let [ $root, title, url ] = get_row_data(evt);
+        let [ $root, title, url ] = get_row_data(evt.target);
 
         // update place timestamp, checked_in
         let row = data.filter(r => r.url == url)[0];
@@ -181,6 +181,24 @@
       $('.btn-scan').click(_ => {
         location.href = get_scan_url();
       });
+
+      // usage time
+      function update_usage_time () {
+        let checkout_btns = $('.btn-checkin.btn-warning').toArray();
+        if (checkout_btns.length == 0) return;
+        checkout_btns.forEach(btn => {
+          let [ $root, title, url ] = get_row_data(btn);
+          let shop_info = Thaichana.extract_shop_url(url);
+          let row = data.filter(r => r.shop_id == shop_info.shop_id)[0];
+          let label = 'เช็คเอาท์';
+          if (row) {
+            label = moment.utc(moment().diff(moment(row.timestamp))).format("H:mm:ss");
+          }
+          $(btn).html(label);
+        });
+        setTimeout(update_usage_time, 1000);
+      }
+      update_usage_time();
 
     </script>
 
