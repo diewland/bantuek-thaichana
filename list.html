@@ -60,7 +60,7 @@
 
     <!-- bottom -->
     <div class='bottom row'>
-      <a class='col btn btn-log btn-lg btn-warning' href='#/'>ดูประวัติ</a>
+      <a class='col btn btn-log btn-lg btn-info' href='#/'>ดูประวัติ</a>
       <a class='col btn btn-scan btn-lg btn-danger' href='#/'>สแกน</a>
     </div>
 
@@ -171,6 +171,9 @@
         row.timestamp = ts();
         row.checked_in = new_checked_in;
         update_disk();
+
+        // add history
+        Db.add_history(row);
 
         // check-in/check-out in 100 ms
         setTimeout(_ => {

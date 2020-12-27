@@ -73,14 +73,15 @@
 
     <script>
 
-      // query data from disk TODO change to db history
-      let data = Db.list();
+      // query data from disk
+      let data = Db.list_history();
 
       // prepare place list
       if (data.length > 0) $('.place-list').html('');
 
       // render places
-      data.forEach(place => { // TODO reverse ??
+      data.reverse(); // latest on top
+      data.forEach(place => {
        let last_timestamp = moment(place.timestamp).format(FMT_DATETIME);
         let checked_in = place.checked_in || false;
         let badge = checked_in ? "<span class='badge badge-success'>เช็คอิน</span>"
