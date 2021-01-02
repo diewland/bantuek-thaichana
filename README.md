@@ -1,21 +1,31 @@
-# bantuek-thaichana v.0.0.8
+# bantuek-thaichana v.1.0
+
+Another Thaichana Client
 
 ### Features
+
 * Check-In / Check-Out
 * Shop history
+* Check-In / Check-Out history
+* Import / Export data
 
 ### Recommended Browsers
-* iOS -> Safari
-* Android -> Chrome
 
-### Backend
-* https://www.thaichana.com 🙏
+Platform | Browser
+--- | ---
+iOS | Safari
+Android | Chrome
 
-### Thanks
-* basic - https://jquery.com
-* ui - https://getbootstrap.com
-* datetime - https://momentjs.com
-* qr#v1 - https://github.com/jbialobr/JsQRScanner
-* qr#v2 - https://github.com/mebjas/html5-qrcode
-* local-storage - https://github.com/diewland/disk.js
-* icon-maker - https://realfavicongenerator.net
+Not work work LINE browser, please open with Chrome or Safari :/
+
+### References
+
+Title | URL
+--- | ---
+core | https://jquery.com
+ui | https://getbootstrap.com
+datetime | https://momentjs.com
+qr#v1 | https://github.com/jbialobr/JsQRScanner
+qr#v2 | https://github.com/mebjas/html5-qrcode
+local-storage | https://github.com/diewland/disk.js
+icon-maker | https://realfavicongenerator.net
