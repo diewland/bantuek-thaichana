@@ -95,6 +95,8 @@
         if (!go) return;
 
         let s = prompt("Paste export data");
+        if (!s) return;
+
         try {
           let export_data = JSON.parse(s);
           for (let k in export_data) {
