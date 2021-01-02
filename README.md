@@ -16,7 +16,7 @@ Platform | Browser
 iOS | Safari
 Android | Chrome
 
-Not work work LINE browser, please open with Chrome or Safari :/
+Not work when open link from LINE, please open with Chrome or Safari :/
 
 ### References
 
