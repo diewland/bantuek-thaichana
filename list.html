@@ -94,7 +94,14 @@
 
       // prepare place list
       if (data.length > 0) {
-        $('.place-list').html('');
+        $('.place-list').html(`
+          <div class="input-group px-3">
+            <input type="text" id="filter-place" class="form-control" placeholder="ค้นหาสถานที่" aria-label="ค้นหาสถานที่" aria-describedby="ค้นหาสถานที่">
+            <div class="input-group-append">
+              <span class="input-group-text" id="filter-clear">🗑️</span>
+            </div>
+          </div>
+        `);
       }
       // empty list
       else {
@@ -215,6 +222,20 @@
         setTimeout(update_usage_time, 1000);
       }
       update_usage_time();
+
+      // filter
+      $('body').on('keyup', '#filter-place', evt => {
+        $('.place-list .row.align-items-center').each((i, r) => {
+          let filter = evt.target.value.toLowerCase();
+          let title = $(r).attr('data-title').toLowerCase();
+          let show = title.indexOf(filter) >= 0;
+          $(r).toggle(show);
+        });
+      });
+      $('body').on('click', '#filter-clear', _ => {
+        $('#filter-place').val('');
+        $('.place-list .row.align-items-center').show();
+      });
 
     </script>
 
