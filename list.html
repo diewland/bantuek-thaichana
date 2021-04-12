@@ -54,7 +54,7 @@
     <!-- list -->
     <div class='place-list'>
       <div class='welcome'>
-        <h3>กดปุ่มด้านล่างเพื่อสแกน</h3>
+        <h3>กำลังโหลดข้อมูล...</h3>
       </div>
     </div>
 
@@ -93,7 +93,13 @@
       }
 
       // prepare place list
-      if (data.length > 0) $('.place-list').html('');
+      if (data.length > 0) {
+        $('.place-list').html('');
+      }
+      // empty list
+      else {
+        $('.welcome h3').html('กดปุ่มด้านล่างเพื่อสแกน');
+      }
 
       // render places
       data.sort((a, b) => {
